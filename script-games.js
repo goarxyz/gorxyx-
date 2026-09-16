@@ -1910,63 +1910,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-// --- NEW ARCHITECTURE LOGIC ---
+// --- DECOUPLED ARCHITECTURE LOGIC (GAMES) ---
 document.addEventListener('DOMContentLoaded', () => {
   const views = {
-    hub: document.getElementById('hub-section'),
-    games: document.getElementById('games-section'),
-    music: document.getElementById('music-section'),
-    anime: document.getElementById('anime-section')
+    games: document.getElementById('games-section')
   };
   
   const bottomNav = document.getElementById('main-bottom-nav');
   const globalHeader = document.querySelector('.site-header, .header');
   if (globalHeader) globalHeader.style.display = 'none';
 
-  function switchSystem(sys) {
-    if (!views[sys]) sys = 'hub';
-    
-    // Hide all
-    Object.values(views).forEach(v => {
-      if(v) {
-        v.classList.remove('is-active');
-        v.style.display = 'none';
-      }
-    });
-    
-    // Reset nav
-    document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(el => el.classList.remove('is-active'));
-    
-    if(views[sys]) {
-      views[sys].classList.add('is-active');
-      views[sys].style.display = 'flex';
-    }
-    
-    if(bottomNav) bottomNav.style.display = 'flex';
-    
-    const btn = document.getElementById('sys-btn-' + sys);
-    if(btn) btn.classList.add('is-active');
+  // Ensure local section is active and visible
+  if (views.games) {
+    views.games.classList.add('is-active');
+    views.games.style.display = 'flex';
+  }
 
-    // Update URL hash
-    try {
-      if (sys === 'hub') {
-        if (window.location.hash) window.history.replaceState(null, '', window.location.pathname);
-      } else {
-        window.history.replaceState(null, '', '#' + sys);
-      }
-    } catch(e) {}
-    
-    // Auto initialize content on open
-    if (sys === 'music') {
-      const mGrid = document.getElementById("music-grid");
-      if (mGrid && mGrid.children.length === 0 && typeof window.searchMusic === 'function') {
-        window.searchMusic('trending hits');
-      }
-    } else if (sys === 'anime') {
-      const aGrid = document.getElementById("anime-grid");
-      if (aGrid && aGrid.children.length === 0 && typeof window.loadTopAnime === 'function') {
-        window.loadTopAnime();
-      }
+  // Update navigation highlights
+  document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(el => el.classList.remove('is-active'));
+  const activeBtn = document.getElementById('sys-btn-games');
+  if (activeBtn) activeBtn.classList.add('is-active');
+
+  function switchSystem(sys) {
+    if (sys === 'hub' || sys === 'index') {
+      window.location.href = '/';
+    } else if (sys !== 'games' && sys) {
+      window.location.href = '/' + sys;
     }
   }
 
@@ -1993,17 +1962,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Hash Navigation Listener
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash.replace('#', '');
-    if (['games', 'music', 'anime', 'hub'].includes(hash)) {
+    if (hash && hash !== 'games') {
       switchSystem(hash);
     }
   });
 
   // Initial Route Check
   const hashOnLoad = window.location.hash.replace('#', '');
-  if (['games', 'music', 'anime'].includes(hashOnLoad)) {
+  if (hashOnLoad && hashOnLoad !== 'games') {
     switchSystem(hashOnLoad);
-  } else {
-    switchSystem('hub');
   }
 
   // --- Games System Wireup ---
@@ -2636,83 +2603,249 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // SimpMusic System Bridging & Display Logic
 
+window.openGameTheaterModal = function(slug, title, category = "Instant Play") {
+  const modal = document.getElementById("goarxyz-game-modal");
+  const iframe = document.getElementById("goarxyz-inapp-game-frame");
+  const loader = document.getElementById("game-modal-loader");
+  const titleEl = document.getElementById("game-modal-title");
+  const badgeEl = document.getElementById("game-modal-badge");
+  const favBtn = document.getElementById("btn-game-modal-fav");
 
+  if (!modal || !iframe) return;
+
+  if (titleEl) titleEl.textContent = title || slug;
+  if (badgeEl) badgeEl.textContent = category.toUpperCase();
+
+  activeGameSession = {
+    slug,
+    title,
+    category,
+    startTime: Date.now()
+  };
+
+  // Update favorite status on the modal button
+  const isFav = (typeof getFavorites === 'function' && getFavorites().includes(slug));
+  if (favBtn) {
+    favBtn.classList.toggle("is-active", isFav);
+    const span = favBtn.querySelector("span");
+    if (span) span.textContent = isFav ? "Favorited" : "Favorite";
+  }
+
+  // Show loader and set iframe URL
+  if (loader) loader.classList.remove("is-hidden");
+  iframe.onload = () => {
+    if (loader) loader.classList.add("is-hidden");
+  };
+  iframe.src = `https://play.famobi.com/${slug}/?customer=A1000`;
+
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+  // Dispatch telemetry
+  if (typeof window.trackEvent === 'function') {
+    window.trackEvent("inapp_game_start", {
+      item_id: slug,
+      item_name: title,
+      content_type: "game",
+      category: category
+    });
+  }
+};
+
+window.closeGameTheaterModal = function() {
+  const modal = document.getElementById("goarxyz-game-modal");
+  const iframe = document.getElementById("goarxyz-inapp-game-frame");
+  if (!modal) return;
+
+  if (activeGameSession && typeof window.trackEvent === 'function') {
+    const durationSeconds = Math.round((Date.now() - activeGameSession.startTime) / 1000);
+    window.trackEvent("inapp_game_complete", {
+      item_id: activeGameSession.slug,
+      item_name: activeGameSession.title,
+      duration_seconds: durationSeconds
+    });
+  }
+
+  activeGameSession = null;
+  if (iframe) iframe.src = "about:blank";
+  modal.style.display = "none";
+  document.body.style.overflow = "";
+};
+
+// Wire modal buttons
+document.getElementById("btn-game-modal-close")?.addEventListener("click", window.closeGameTheaterModal);
+document.getElementById("game-modal-backdrop")?.addEventListener("click", window.closeGameTheaterModal);
+
+document.getElementById("btn-game-modal-reload")?.addEventListener("click", () => {
+  const iframe = document.getElementById("goarxyz-inapp-game-frame");
+  const loader = document.getElementById("game-modal-loader");
+  if (iframe && iframe.src && iframe.src !== "about:blank") {
+    if (loader) loader.classList.remove("is-hidden");
+    iframe.src = iframe.src;
+  }
+});
+
+document.getElementById("btn-game-modal-fullscreen")?.addEventListener("click", () => {
+  const frameWrap = document.getElementById("game-modal-frame-wrap");
+  if (!frameWrap) return;
+  if (!document.fullscreenElement) {
+    frameWrap.requestFullscreen?.().catch(() => {});
+  } else {
+    document.exitFullscreen?.().catch(() => {});
+  }
+});
+
+document.getElementById("btn-game-modal-fav")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (!activeGameSession || typeof getFavorites !== 'function' || typeof saveFavorites !== 'function') return;
+  const favs = getFavorites();
+  const slug = activeGameSession.slug;
+  const idx = favs.indexOf(slug);
+  const favBtn = document.getElementById("btn-game-modal-fav");
+  if (idx > -1) {
+    favs.splice(idx, 1);
+    favBtn?.classList.remove("is-active");
+    if (favBtn?.querySelector("span")) favBtn.querySelector("span").textContent = "Favorite";
+    window.trackEvent?.("remove_from_favorites", { item_id: slug });
+  } else {
+    favs.push(slug);
+    favBtn?.classList.add("is-active");
+    if (favBtn?.querySelector("span")) favBtn.querySelector("span").textContent = "Favorited";
+    window.trackEvent?.("add_to_favorites", { item_id: slug });
+  }
+  saveFavorites(favs);
+});
+
+// Close game modal on Escape
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const gameModal = document.getElementById("goarxyz-game-modal");
+    if (gameModal && gameModal.style.display !== "none") {
+      window.closeGameTheaterModal();
+    }
+    const settingsModal = document.getElementById("platform-settings-modal");
+    if (settingsModal && settingsModal.style.display !== "none") {
+      window.closePlatformSettingsModal?.();
+    }
+  }
+});
+
+/* ==========================================================================
+   Hub Live Media Showcase Video Controller
+   ========================================================================== */
+
+
+// Games Page Filter & Nav Wireup
 document.addEventListener('DOMContentLoaded', () => {
-  // Handle hash redirections for backwards compatibility
-  const hash = window.location.hash.replace('#', '');
-  if (hash === 'games') window.location.href = '/games';
-  else if (hash === 'music') window.location.href = '/music';
-  else if (hash === 'anime') window.location.href = '/anime';
+  const gamesNavs = [
+    { id: 'btn-games-home', mode: 'all' },
+    { id: 'btn-games-action', mode: 'action' },
+    { id: 'btn-games-puzzle', mode: 'puzzle' },
+    { id: 'btn-games-racing', mode: 'racing' },
+    { id: 'btn-games-favorites', mode: 'favorites' }
+  ];
 
-  window.addEventListener('hashchange', () => {
-    const h = window.location.hash.replace('#', '');
-    if (h === 'games') window.location.href = '/games';
-    else if (h === 'music') window.location.href = '/music';
-    else if (h === 'anime') window.location.href = '/anime';
+  gamesNavs.forEach(nav => {
+    const el = document.getElementById(nav.id);
+    if(el) {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('#games-section .nav-item').forEach(n => n.classList.remove('is-active'));
+        el.classList.add('is-active');
+        if(typeof window.applyFilter === 'function') {
+           window.applyFilter('', nav.mode);
+        }
+      });
+    }
   });
 
-  // Hub Portal Cards redirect directly
-  document.querySelectorAll('.hub-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const sys = card.getAttribute('data-sys');
-      if (sys) window.location.href = '/' + sys;
-    });
-  });
-
-  // Bottom Navigation links
-  document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const href = btn.getAttribute('href') || '';
-      const sys = href.replace('#', '');
-      if (sys === 'hub' || !sys) {
-        window.location.href = '/';
-      } else {
-        window.location.href = '/' + sys;
+  document.querySelectorAll('#games-category-chips .chip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#games-category-chips .chip-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const cat = btn.getAttribute('data-cat') || 'all';
+      if (typeof window.applyFilter === 'function') {
+        window.applyFilter('', cat);
       }
     });
   });
 
-  // Hub Showcase Quick Actions
-  document.getElementById("btn-showcase-games")?.addEventListener("click", () => {
-    window.location.href = "/games";
-  });
-  document.getElementById("btn-showcase-music")?.addEventListener("click", () => {
-    window.location.href = "/music";
-  });
-  document.getElementById("btn-showcase-anime")?.addEventListener("click", () => {
-    window.location.href = "/anime";
-  });
-
-  // Quick Pills
-  document.querySelectorAll('.hub-quick-pill').forEach(pill => {
-    pill.addEventListener('click', (e) => {
-      e.preventDefault();
-      const sys = pill.getAttribute('data-sys');
-      if (sys) {
-        window.location.href = '/' + sys;
-      }
-    });
-  });
-
-  // Spotlight Cards
-  document.querySelectorAll('.hub-spotlight-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const target = item.getAttribute('data-hub-jump');
-      if (target) {
-        window.location.href = '/' + (target === 'game' ? 'games' : target);
-      }
-    });
-  });
-
-  // Omni Search redirects to Games Search
-  const hubSearch = document.getElementById('hub-omni-search');
-  if (hubSearch) {
-    hubSearch.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && hubSearch.value.trim() !== '') {
-        const query = encodeURIComponent(hubSearch.value.trim());
-        window.location.href = '/games?q=' + query;
+  const gamesSearch = document.getElementById('games-search');
+  if(gamesSearch) {
+    gamesSearch.addEventListener('input', (e) => {
+      const q = e.target.value;
+      if(typeof window.applyFilter === 'function') {
+        window.applyFilter(q, q ? "search" : "all");
       }
     });
   }
+
+  // Populate Games Carousel
+  const track = document.querySelector('#games-section .carousel-track') || document.querySelector('.carousel-track');
+  if(track) {
+    track.innerHTML = '';
+    const gameCards = Array.from(document.querySelectorAll('#games-section .game-grid .game-card')).slice(0, 12);
+    gameCards.forEach(g => {
+       const imgEl = g.querySelector('img');
+       const titleEl = g.querySelector('h3');
+       const catEl = g.querySelector('.game-card__cat');
+       const slug = g.getAttribute('data-slug') || '';
+       const title = titleEl ? titleEl.textContent : '';
+       const cat = catEl ? catEl.textContent : 'Arcade';
+       const img = imgEl ? imgEl.src : '';
+       if (!img || !title) return;
+       
+       const slide = document.createElement('div');
+       slide.className = 'carousel-slide';
+       slide.innerHTML = `
+         <div class="carousel-slide__thumb-wrap">
+           <img src="${img}" alt="${title}" loading="lazy">
+           <span class="carousel-slide__badge">Hot</span>
+           <button class="carousel-slide__play" aria-label="Play ${title}">
+             <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+           </button>
+         </div>
+         <div class="carousel-slide__info">
+           <div class="carousel-caption">${title}</div>
+           <div class="carousel-sub">${cat}</div>
+         </div>
+       `;
+       slide.addEventListener('click', (e) => {
+         e.preventDefault();
+         if (typeof window.openGameTheaterModal === 'function' && slug) {
+           window.openGameTheaterModal(slug, title, cat);
+         }
+       });
+       track.appendChild(slide);
+    });
+  }
+
+  // Wire custom Play in New Tab button in the game modal
+  const popoutBtn = document.getElementById("btn-game-modal-popout");
+  if (popoutBtn) {
+    popoutBtn.addEventListener("click", () => {
+      if (activeGameSession) {
+        window.open(`https://play.famobi.com/${activeGameSession.slug}/?customer=A1000`, '_blank');
+        window.trackEvent?.("inapp_game_popout", { item_id: activeGameSession.slug, item_name: activeGameSession.title });
+      }
+    });
+  }
+
+  // Wire category filter clicks for individual game cards so they direct correctly
+  document.querySelectorAll('.game-card__link').forEach(link => {
+    const card = link.closest('.game-card');
+    const slug = card?.getAttribute('data-slug');
+    const title = card?.querySelector('h3')?.textContent;
+    if (link && card && slug) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const cat = card.dataset.search ? card.dataset.search.split(" ")[1] : "Instant Play";
+        if (typeof window.openGameTheaterModal === 'function') {
+          window.openGameTheaterModal(slug, title, cat);
+        } else {
+          window.location.href = `/game/${slug}/`;
+        }
+      });
+    }
+  });
 });

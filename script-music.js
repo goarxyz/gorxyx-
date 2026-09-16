@@ -1910,63 +1910,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-// --- NEW ARCHITECTURE LOGIC ---
+// --- DECOUPLED ARCHITECTURE LOGIC (MUSIC) ---
 document.addEventListener('DOMContentLoaded', () => {
   const views = {
-    hub: document.getElementById('hub-section'),
-    games: document.getElementById('games-section'),
-    music: document.getElementById('music-section'),
-    anime: document.getElementById('anime-section')
+    music: document.getElementById('music-section')
   };
   
   const bottomNav = document.getElementById('main-bottom-nav');
   const globalHeader = document.querySelector('.site-header, .header');
   if (globalHeader) globalHeader.style.display = 'none';
 
-  function switchSystem(sys) {
-    if (!views[sys]) sys = 'hub';
-    
-    // Hide all
-    Object.values(views).forEach(v => {
-      if(v) {
-        v.classList.remove('is-active');
-        v.style.display = 'none';
-      }
-    });
-    
-    // Reset nav
-    document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(el => el.classList.remove('is-active'));
-    
-    if(views[sys]) {
-      views[sys].classList.add('is-active');
-      views[sys].style.display = 'flex';
-    }
-    
-    if(bottomNav) bottomNav.style.display = 'flex';
-    
-    const btn = document.getElementById('sys-btn-' + sys);
-    if(btn) btn.classList.add('is-active');
+  // Ensure local section is active and visible
+  if (views.music) {
+    views.music.classList.add('is-active');
+    views.music.style.display = 'flex';
+  }
 
-    // Update URL hash
-    try {
-      if (sys === 'hub') {
-        if (window.location.hash) window.history.replaceState(null, '', window.location.pathname);
-      } else {
-        window.history.replaceState(null, '', '#' + sys);
-      }
-    } catch(e) {}
-    
-    // Auto initialize content on open
-    if (sys === 'music') {
-      const mGrid = document.getElementById("music-grid");
-      if (mGrid && mGrid.children.length === 0 && typeof window.searchMusic === 'function') {
-        window.searchMusic('trending hits');
-      }
-    } else if (sys === 'anime') {
-      const aGrid = document.getElementById("anime-grid");
-      if (aGrid && aGrid.children.length === 0 && typeof window.loadTopAnime === 'function') {
-        window.loadTopAnime();
-      }
+  // Update navigation highlights
+  document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(el => el.classList.remove('is-active'));
+  const activeBtn = document.getElementById('sys-btn-music');
+  if (activeBtn) activeBtn.classList.add('is-active');
+
+  function switchSystem(sys) {
+    if (sys === 'hub' || sys === 'index') {
+      window.location.href = '/';
+    } else if (sys !== 'music' && sys) {
+      window.location.href = '/' + sys;
     }
   }
 
@@ -1993,17 +1962,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Hash Navigation Listener
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash.replace('#', '');
-    if (['games', 'music', 'anime', 'hub'].includes(hash)) {
+    if (hash && hash !== 'music') {
       switchSystem(hash);
     }
   });
 
   // Initial Route Check
   const hashOnLoad = window.location.hash.replace('#', '');
-  if (['games', 'music', 'anime'].includes(hashOnLoad)) {
+  if (hashOnLoad && hashOnLoad !== 'music') {
     switchSystem(hashOnLoad);
-  } else {
-    switchSystem('hub');
   }
 
   // --- Games System Wireup ---
@@ -2636,83 +2603,125 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // SimpMusic System Bridging & Display Logic
 
+window.displayMusicResults = function(data) {
+  const mGrid = document.getElementById("music-grid");
+  const mLoading = document.getElementById("music-loading");
+  if (mLoading) mLoading.style.display = "none";
+  if (!mGrid) return;
+  mGrid.innerHTML = "";
 
+  const items = Array.isArray(data) ? data : (data && data.content ? data.content : []);
+  if (!items || items.length === 0) {
+    mGrid.innerHTML = "<div class='simpmusic-empty-state'>No tracks found. Try searching for an artist, track, or genre!</div>";
+    return;
+  }
+
+  items.forEach(item => {
+    if (window.SimpMusic && typeof window.SimpMusic.createSongCard === 'function') {
+      const card = window.SimpMusic.createSongCard(item, items);
+      mGrid.appendChild(card);
+    }
+  });
+};
+
+window.playSpotifyTrack = function(videoId, title, artist, thumb) {
+  if (window.SimpMusic && typeof window.SimpMusic.playTrack === 'function') {
+    window.SimpMusic.playTrack({
+      id: videoId,
+      videoId: videoId,
+      title: title || 'Unknown Track',
+      artist: artist || 'Unknown Artist',
+      thumbnail: thumb || '/logo.svg'
+    });
+  }
+};
+
+window.searchMusic = async function(query) {
+  const mLoading = document.getElementById("music-loading");
+  if (mLoading) {
+    mLoading.style.display = "block";
+    mLoading.textContent = `Streaming results for "${query}"...`;
+  }
+  try {
+    const res = await fetch(`/api/music/search?q=${encodeURIComponent(query)}`);
+    if (!res.ok) throw new Error("Music fetch failed");
+    const data = await res.json();
+    if (typeof window.displayMusicResults === 'function') {
+      window.displayMusicResults(data);
+    }
+  } catch (e) {
+    console.error(e);
+    if (mLoading) {
+      mLoading.textContent = "Error streaming music. Please check your connection.";
+    }
+  }
+};
+
+/* ==========================================================================
+   goarxyz In-App Game Theater Iframe Modal Controller
+   ========================================================================== */
+let activeGameSession = null;
+
+
+
+// Music Page Navigation
 document.addEventListener('DOMContentLoaded', () => {
-  // Handle hash redirections for backwards compatibility
-  const hash = window.location.hash.replace('#', '');
-  if (hash === 'games') window.location.href = '/games';
-  else if (hash === 'music') window.location.href = '/music';
-  else if (hash === 'anime') window.location.href = '/anime';
-
-  window.addEventListener('hashchange', () => {
-    const h = window.location.hash.replace('#', '');
-    if (h === 'games') window.location.href = '/games';
-    else if (h === 'music') window.location.href = '/music';
-    else if (h === 'anime') window.location.href = '/anime';
-  });
-
-  // Hub Portal Cards redirect directly
-  document.querySelectorAll('.hub-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const sys = card.getAttribute('data-sys');
-      if (sys) window.location.href = '/' + sys;
-    });
-  });
-
-  // Bottom Navigation links
-  document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const href = btn.getAttribute('href') || '';
-      const sys = href.replace('#', '');
-      if (sys === 'hub' || !sys) {
-        window.location.href = '/';
-      } else {
-        window.location.href = '/' + sys;
+  // Select Category Chips
+  document.querySelectorAll('#music-genre-chips .chip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#music-genre-chips .chip-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const query = btn.getAttribute('data-query');
+      if (query && typeof window.searchMusic === 'function') {
+        window.searchMusic(query);
       }
     });
   });
 
-  // Hub Showcase Quick Actions
-  document.getElementById("btn-showcase-games")?.addEventListener("click", () => {
-    window.location.href = "/games";
-  });
-  document.getElementById("btn-showcase-music")?.addEventListener("click", () => {
-    window.location.href = "/music";
-  });
-  document.getElementById("btn-showcase-anime")?.addEventListener("click", () => {
-    window.location.href = "/anime";
+  // Music Sidebar Genere & Navigation
+  const musicNavItems = [
+    { id: 'btn-music-discover', query: 'trending hits' },
+    { id: 'btn-music-charts', query: 'top 50 global hits' },
+    { id: 'btn-music-moods', query: 'lofi chill beats' },
+    { id: 'btn-music-library', query: 'library' }
+  ];
+
+  musicNavItems.forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el) {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('#simpmusic-subnav .nav-item').forEach(n => n.classList.remove('is-active'));
+        el.classList.add('is-active');
+
+        // Toggle subviews inside music.html
+        const discoverTab = document.getElementById('simpmusic-view-discover');
+        const moodsTab = document.getElementById('simpmusic-view-moods');
+        const chartsTab = document.getElementById('simpmusic-view-charts');
+        const libraryTab = document.getElementById('simpmusic-view-library');
+
+        if (discoverTab) discoverTab.style.display = 'none';
+        if (moodsTab) moodsTab.style.display = 'none';
+        if (chartsTab) chartsTab.style.display = 'none';
+        if (libraryTab) libraryTab.style.display = 'none';
+
+        if (item.id === 'btn-music-discover' && discoverTab) {
+          discoverTab.style.display = 'block';
+          window.searchMusic('trending hits');
+        } else if (item.id === 'btn-music-moods' && moodsTab) {
+          moodsTab.style.display = 'block';
+        } else if (item.id === 'btn-music-charts' && chartsTab) {
+          chartsTab.style.display = 'block';
+          window.searchMusic('top 50 global hits');
+        } else if (item.id === 'btn-music-library' && libraryTab) {
+          libraryTab.style.display = 'block';
+        }
+      });
+    }
   });
 
-  // Quick Pills
-  document.querySelectorAll('.hub-quick-pill').forEach(pill => {
-    pill.addEventListener('click', (e) => {
-      e.preventDefault();
-      const sys = pill.getAttribute('data-sys');
-      if (sys) {
-        window.location.href = '/' + sys;
-      }
-    });
-  });
-
-  // Spotlight Cards
-  document.querySelectorAll('.hub-spotlight-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const target = item.getAttribute('data-hub-jump');
-      if (target) {
-        window.location.href = '/' + (target === 'game' ? 'games' : target);
-      }
-    });
-  });
-
-  // Omni Search redirects to Games Search
-  const hubSearch = document.getElementById('hub-omni-search');
-  if (hubSearch) {
-    hubSearch.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && hubSearch.value.trim() !== '') {
-        const query = encodeURIComponent(hubSearch.value.trim());
-        window.location.href = '/games?q=' + query;
-      }
-    });
+  // Load Initial trending hits
+  if (typeof window.searchMusic === 'function') {
+    window.searchMusic('trending hits');
   }
 });

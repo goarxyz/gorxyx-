@@ -90,328 +90,286 @@
     
 <div class="app-container">
   <!-- HUB -->
-  <div id="hub-section" class="system-view is-active">
-    <div class="hub-inner">
-      <div class="hub-hero">
-        <div class="brand-line-unified">
-          <span class="brand-line-title">goar<span class="brand-accent">xyz</span></span>
-          <div class="brand-line-icons" aria-label="Games, Music, and Video">
-            <span class="brand-line-ico" title="Games">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4"></path><path d="M8 10v4"></path><circle cx="15" cy="13" r="1" fill="currentColor"></circle><circle cx="18" cy="11" r="1" fill="currentColor"></circle></svg>
-            </span>
-            <span class="brand-line-ico" title="Music">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3" fill="currentColor"></circle><circle cx="18" cy="16" r="3" fill="currentColor"></circle></svg>
-            </span>
-            <span class="brand-line-ico" title="Anime & Video">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7" fill="currentColor"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
-            </span>
+  <!-- ANIME SYSTEM (NYAnime Architecture with goarxyz Brand & Colours) -->
+  <div id="anime-section" class="system-view is-active" style="display: flex;">
+    <div class="system-layout anime-layout">
+      <aside class="system-sidebar">
+        <div class="system-brand" onclick="switchSystem('hub');" title="Back to Hub" role="button" tabindex="0">
+          <div class="brand-line-sidebar">
+            <span class="brand-line-title">goar<span class="brand-accent">xyz</span></span>
+            <span class="anime-brand-badge">ANIME</span>
           </div>
         </div>
-        <h1 class="hub-main-headline">Play, Listen &amp; Watch — All in One Place</h1>
-        <p class="hub-subtitle">No downloads, no sign-ups, no waiting. Jump straight into 630+ instant games, stream your favorite music tracks, or binge top anime series with a single tap.</p>
-        <div class="hub-quick-launcher">
-          <div class="hub-quick-input-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="hub-omni-search" class="hub-quick-input" placeholder="Search 630+ free games, music hits, or anime series..." autocomplete="off">
-          </div>
-          <div class="hub-quick-pills">
-            <button class="hub-quick-pill" data-sys="games" data-cat="action">Action Games</button>
-            <button class="hub-quick-pill" data-sys="games" data-cat="puzzle">Puzzle Games</button>
-            <button class="hub-quick-pill" data-sys="music" data-genre="Pop">Pop Hits</button>
-            <button class="hub-quick-pill" data-sys="music" data-genre="Lo-Fi">Lo-Fi Beats</button>
-            <button class="hub-quick-pill" data-sys="anime" data-filter="top">Top Anime</button>
-            <button class="hub-quick-pill" data-sys="anime" data-genre="Action">Action Series</button>
-          </div>
-        </div>
-      </div>
-      <div class="hub-metrics-ribbon">
-        <div class="hub-metric-box">
-          <div class="hub-metric-val">630+</div>
-          <div class="hub-metric-lbl">Free Instant Games</div>
-        </div>
-        <div class="hub-metric-box">
-          <div class="hub-metric-val">Millions</div>
-          <div class="hub-metric-lbl">Songs &amp; Playlists</div>
-        </div>
-        <div class="hub-metric-box">
-          <div class="hub-metric-val">Top Series</div>
-          <div class="hub-metric-lbl">Anime &amp; HD Video</div>
-        </div>
-        <div class="hub-metric-box">
-          <div class="hub-metric-val">100% Free</div>
-          <div class="hub-metric-lbl">No Sign-Up Needed</div>
-        </div>
-      </div>
-      <div class="hub-cards">
-        <div class="hub-card" data-sys="games" id="hub-card-games">
-          <div class="hub-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect><path d="M6 12h4"></path><path d="M8 10v4"></path><path d="M15 13h.01"></path><path d="M18 11h.01"></path></svg>
-          </div>
-          <h3>Free Instant Games</h3>
-          <p>Over 630 browser games ready to play in seconds. Action, puzzles, arcade &amp; racing with zero installs.</p>
-          <div class="hub-card-cta">Play Games Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
-        </div>
+        <nav class="system-nav anime-nav">
+          <div class="system-nav-group-title">DISCOVER</div>
+          <a href="#" class="nav-item is-active" id="btn-anime-home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Home &amp; Spotlight
+          </a>
+          <a href="#" class="nav-item" id="btn-anime-top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            Top Airing
+          </a>
+          <a href="#" class="nav-item" id="btn-anime-popular">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Most Popular
+          </a>
+          <a href="#" class="nav-item" id="btn-anime-movies">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+            Movies &amp; OVAs
+          </a>
+          <a href="#" class="nav-item" id="btn-anime-random">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 8h.01"></path><path d="M8 8h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path><path d="M12 12h.01"></path></svg>
+            Roll Random
+          </a>
+          <a href="#" class="nav-item" id="btn-anime-watchlist">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+            My Watchlist
+          </a>
 
-        <div class="hub-card" data-sys="music" id="hub-card-music">
-          <div class="hub-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-          </div>
-          <h3>Free Streaming Music</h3>
-          <p>Listen to global chart-toppers, relaxing lo-fi beats, and curated mixes with background playback.</p>
-          <div class="hub-card-cta">Listen to Music <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
-        </div>
+          <div class="system-nav-group-title" style="margin-top: 20px;">TOP GENRES</div>
+          <a href="#" class="nav-item" id="btn-anime-action">Action</a>
+          <a href="#" class="nav-item" id="btn-anime-adventure">Adventure</a>
+          <a href="#" class="nav-item" id="btn-anime-fantasy">Fantasy</a>
+          <a href="#" class="nav-item" id="btn-anime-scifi">Sci-Fi</a>
+          <a href="#" class="nav-item" id="btn-anime-supernatural">Supernatural</a>
+          <a href="#" class="nav-item" id="btn-anime-comedy">Comedy</a>
+        </nav>
+      </aside>
 
-        <div class="hub-card" data-sys="anime" id="hub-card-anime">
-          <div class="hub-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
-          </div>
-          <h3>Anime &amp; HD Videos</h3>
-          <p>Explore top-rated anime series, trending episodes, and high-energy trailers streaming in high definition.</p>
-          <div class="hub-card-cta">Watch Anime Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
-        </div>
-      </div>
+      <main class="system-main">
+        <header class="system-header anime-header">
+          <div class="system-header-row anime-header-row">
+            <div class="system-search anime-search-box">
+              <svg class="system-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="anime-search-input" placeholder="Search anime series, movies, characters... (Press Ctrl+K)" autocomplete="off">
+              <span class="anime-search-kbd">⌘K</span>
+              <button id="anime-search-clear" class="anime-search-clear" style="display:none;" title="Clear search">×</button>
+              <div id="anime-search-dropdown" class="anime-search-dropdown" style="display:none;"></div>
+            </div>
 
-      <!-- Features & Top Picks Section (Consistent Style Matching Games) -->
-      <div class="hub-top-picks-section" id="hub-top-picks">
-        <div class="hub-section-heading">
-          <div class="hub-heading-text">
-            <h2>Features &amp; Top Picks</h2>
-            <p class="hub-heading-sub">Hand-picked games, trending tracks, and popular anime ready to try</p>
-          </div>
-          <div class="hub-picks-filter-tabs" id="hub-picks-tabs">
-            <button class="hub-pick-tab is-active" data-pick-filter="all">All Picks</button>
-            <button class="hub-pick-tab" data-pick-filter="games">Games</button>
-            <button class="hub-pick-tab" data-pick-filter="music">Music</button>
-            <button class="hub-pick-tab" data-pick-filter="anime">Anime &amp; Video</button>
-          </div>
-        </div>
-
-        <div class="hub-picks-grid media-selection-grid" id="hub-picks-grid">
-          <!-- Game Pick 1 -->
-          <div class="media-selection-card hub-pick-item" data-type="games" data-slug="temple-blocks" data-title="Temple Blocks" data-cat="Puzzle">
-            <div class="media-card__img-wrap">
-              <img src="https://img.cdn.famobi.com/portal/html5games/images/tmp/180/TempleBlocksTeaser.jpg" alt="Temple Blocks" loading="lazy">
-              <span class="media-card__badge-pill">Top Pick</span>
-              <button class="media-card__play-btn" aria-label="Play Temple Blocks">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <div class="anime-header-actions">
+              <button id="anime-header-random-btn" class="anime-action-btn" title="Discover random anime">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 8h.01"></path><path d="M8 8h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path><path d="M12 12h.01"></path></svg>
+                <span>Random Anime</span>
+              </button>
+              <button id="anime-header-watchlist-btn" class="anime-action-btn" title="View your watchlist">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                <span>Watchlist</span>
+                <span id="anime-header-watchlist-count" class="anime-badge-counter">0</span>
               </button>
             </div>
-            <div class="media-card__info">
-              <h3>Temple Blocks</h3>
-              <p>Tactical Puzzle • Instant Play</p>
-            </div>
           </div>
 
-          <!-- Game Pick 2 -->
-          <div class="media-selection-card hub-pick-item" data-type="games" data-slug="cut-the-rope-time-travel" data-title="Cut The Rope: Time Travel" data-cat="Puzzle">
-            <div class="media-card__img-wrap">
-              <img src="https://img.cdn.famobi.com/portal/html5games/images/tmp/180/CutTheRopeTimeTravelTeaser.jpg" alt="Cut The Rope: Time Travel" loading="lazy">
-              <span class="media-card__badge-pill">Popular</span>
-              <button class="media-card__play-btn" aria-label="Play Cut The Rope Time Travel">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
+          <div class="system-chips" id="anime-genre-chips">
+            <button class="chip-btn is-active" data-filter="top">Top Airing</button>
+            <button class="chip-btn" data-filter="bypopularity">Most Popular</button>
+            <button class="chip-btn" data-filter="movie">Movies</button>
+            <button class="chip-btn" data-query="Action">Action</button>
+            <button class="chip-btn" data-query="Adventure">Adventure</button>
+            <button class="chip-btn" data-query="Fantasy">Fantasy</button>
+            <button class="chip-btn" data-query="Sci-Fi">Sci-Fi</button>
+            <button class="chip-btn" data-query="Supernatural">Supernatural</button>
+            <button class="chip-btn" data-query="Drama">Drama</button>
+            <button class="chip-btn" data-query="Comedy">Comedy</button>
+            <button class="chip-btn" data-query="Shounen">Shounen</button>
+          </div>
+        </header>
+
+        <div class="system-content anime-content">
+          <!-- NYAnime Immersive Spotlight Billboard Banner -->
+          <section class="anime-spotlight-billboard" id="anime-spotlight-section">
+            <div class="anime-spotlight-backdrop" id="anime-spotlight-bg"></div>
+            <div class="anime-spotlight-gradient"></div>
+            <div class="anime-spotlight-body">
+              <div class="anime-spotlight-tags">
+                <span class="anime-tag-badge anime-tag-spotlight">#1 SPOTLIGHT</span>
+                <span class="anime-tag-badge anime-tag-sub">SUB</span>
+                <span class="anime-tag-badge anime-tag-dub">DUB</span>
+                <span class="anime-tag-badge anime-tag-hd">HD 1080P</span>
+                <span class="anime-tag-badge anime-tag-rating" id="anime-spotlight-score">★ 9.38</span>
+              </div>
+              <h1 class="anime-spotlight-title" id="anime-spotlight-title">Frieren: Beyond Journey's End</h1>
+              <div class="anime-spotlight-jp" id="anime-spotlight-jp">葬送のフリーレン</div>
+              <p class="anime-spotlight-desc" id="anime-spotlight-desc">
+                The adventure is over but life goes on for an elf mage just beginning to learn what living is all about. Frieren embarks on a poignant quest of memory, companionship, and humanity.
+              </p>
+              <div class="anime-spotlight-actions">
+                <button class="btn btn--primary anime-spotlight-watch-btn" id="anime-spotlight-watch">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>Stream Series</span>
+                </button>
+                <button class="btn anime-btn-secondary" id="anime-spotlight-details">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  <span>Overview &amp; Episodes</span>
+                </button>
+                <button class="anime-spotlight-bookmark-btn" id="anime-spotlight-bookmark" title="Add to Watchlist">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
+              </div>
             </div>
-            <div class="media-card__info">
-              <h3>Cut The Rope: Time Travel</h3>
-              <p>Physics Puzzle • Instant Play</p>
+
+            <!-- Spotlight Thumbnail Selector Dots -->
+            <div class="anime-spotlight-carousel-nav" id="anime-spotlight-thumbs"></div>
+          </section>
+
+          <!-- Continue Watching Section (NYAnime History) -->
+          <section id="anime-continue-section" class="anime-continue-section" style="display:none;">
+            <div class="section-title-wrap">
+              <h2 class="carousel-title" style="font-size: 1.15rem; font-weight: 700;">Continue Watching</h2>
+              <button id="anime-clear-history-btn" class="anime-text-action">Clear History</button>
             </div>
+            <div id="anime-continue-track" class="anime-continue-track"></div>
+          </section>
+
+          <!-- Anime Catalog Grid -->
+          <div class="section-title-wrap" style="display: flex; align-items: center; justify-content: space-between; margin: 24px 0 14px;">
+            <h2 class="carousel-title" id="anime-section-title" style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em;">Top Airing Series</h2>
+            <span class="system-count-badge" id="anime-count-badge" style="font-size: 0.78rem; font-weight: 600; background: var(--surface-2); padding: 4px 10px; border-radius: 9999px; color: var(--text-dim);">Live HD Servers</span>
           </div>
 
-          <!-- Game Pick 3 -->
-          <div class="media-selection-card hub-pick-item" data-type="games" data-slug="cut-the-rope-2" data-title="Cut The Rope 2" data-cat="Adventure">
-            <div class="media-card__img-wrap">
-              <img src="https://img.cdn.famobi.com/portal/html5games/images/tmp/180/CutTheRope2Teaser.jpg" alt="Cut The Rope 2" loading="lazy">
-              <span class="media-card__badge-pill">Classic</span>
-              <button class="media-card__play-btn" aria-label="Play Cut The Rope 2">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Cut The Rope 2</h3>
-              <p>Adventure • Instant Play</p>
-            </div>
+          <div id="anime-loading" style="display:none; text-align:center; padding:60px 20px; color:var(--text-dim);">
+            <div class="anime-player-spinner" style="margin:0 auto 16px;"></div>
+            <span>Loading anime catalog...</span>
           </div>
 
-          <!-- Game Pick 4 -->
-          <div class="media-selection-card hub-pick-item" data-type="games" data-slug="go-escape" data-title="Go Escape" data-cat="Arcade">
-            <div class="media-card__img-wrap">
-              <img src="https://img.cdn.famobi.com/portal/html5games/images/tmp/180/GoEscapeTeaser.jpg" alt="Go Escape" loading="lazy">
-              <button class="media-card__play-btn" aria-label="Play Go Escape">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Go Escape</h3>
-              <p>Fast Arcade • Instant Play</p>
-            </div>
-          </div>
-
-          <!-- Music Pick 1 -->
-          <div class="media-selection-card hub-pick-item" data-type="music" data-query="trending hits" data-title="Global Top Hits" data-artist="Top Charts Radio">
-            <div class="media-card__img-wrap">
-              <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80" alt="Global Top Hits" loading="lazy">
-              <span class="media-card__badge-pill">Trending</span>
-              <button class="media-card__play-btn" aria-label="Play Global Top Hits">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Global Top Hits</h3>
-              <p>Chart Toppers • Streaming</p>
-            </div>
-          </div>
-
-          <!-- Music Pick 2 -->
-          <div class="media-selection-card hub-pick-item" data-type="music" data-query="lofi hip hop radio beats to relax" data-title="Midnight Lo-Fi Radio" data-artist="Chill Beats Collective">
-            <div class="media-card__img-wrap">
-              <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&q=80" alt="Midnight Lo-Fi Radio" loading="lazy">
-              <span class="media-card__badge-pill">Chill</span>
-              <button class="media-card__play-btn" aria-label="Play Midnight Lo-Fi Radio">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Midnight Lo-Fi Radio</h3>
-              <p>Lo-Fi Chill • Relax Beats</p>
-            </div>
-          </div>
-
-          <!-- Music Pick 3 -->
-          <div class="media-selection-card hub-pick-item" data-type="music" data-query="synthwave retro electro" data-title="Neon Synthwave" data-artist="Electronic Retro">
-            <div class="media-card__img-wrap">
-              <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&q=80" alt="Neon Synthwave" loading="lazy">
-              <button class="media-card__play-btn" aria-label="Play Neon Synthwave">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Neon Synthwave</h3>
-              <p>Retro Electro • Gaming Beats</p>
-            </div>
-          </div>
-
-          <!-- Music Pick 4 -->
-          <div class="media-selection-card hub-pick-item" data-type="music" data-query="pop hits trending" data-title="Pop Anthems" data-artist="Today's Top Pop">
-            <div class="media-card__img-wrap">
-              <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&q=80" alt="Pop Anthems" loading="lazy">
-              <button class="media-card__play-btn" aria-label="Play Pop Anthems">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Pop Anthems</h3>
-              <p>High Energy • Chart Mix</p>
-            </div>
-          </div>
-
-          <!-- Anime Pick 1 -->
-          <div class="media-selection-card hub-pick-item" data-type="anime" data-anime-title="Jujutsu Kaisen" data-title="Jujutsu Kaisen">
-            <div class="media-card__img-wrap">
-              <img src="https://cdn.myanimelist.net/images/anime/1171/109222l.jpg" alt="Jujutsu Kaisen" loading="lazy">
-              <span class="media-card__score"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>8.7</span>
-              <button class="media-card__play-btn" aria-label="Stream Jujutsu Kaisen">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Jujutsu Kaisen</h3>
-              <p>Supernatural Action • HD</p>
-            </div>
-          </div>
-
-          <!-- Anime Pick 2 -->
-          <div class="media-selection-card hub-pick-item" data-type="anime" data-anime-title="Chainsaw Man" data-title="Chainsaw Man">
-            <div class="media-card__img-wrap">
-              <img src="https://cdn.myanimelist.net/images/anime/1806/126216l.jpg" alt="Chainsaw Man" loading="lazy">
-              <span class="media-card__score"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>8.5</span>
-              <button class="media-card__play-btn" aria-label="Stream Chainsaw Man">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Chainsaw Man</h3>
-              <p>Dark Fantasy • HD Stream</p>
-            </div>
-          </div>
-
-          <!-- Anime Pick 3 -->
-          <div class="media-selection-card hub-pick-item" data-type="anime" data-anime-title="Solo Leveling" data-title="Solo Leveling">
-            <div class="media-card__img-wrap">
-              <img src="https://cdn.myanimelist.net/images/anime/1183/141703l.jpg" alt="Solo Leveling" loading="lazy">
-              <span class="media-card__score"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>8.4</span>
-              <button class="media-card__play-btn" aria-label="Stream Solo Leveling">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Solo Leveling</h3>
-              <p>Fantasy Adventure • HD</p>
-            </div>
-          </div>
-
-          <!-- Anime Pick 4 -->
-          <div class="media-selection-card hub-pick-item" data-type="anime" data-anime-title="Kimetsu no Yaiba" data-title="Demon Slayer">
-            <div class="media-card__img-wrap">
-              <img src="https://cdn.myanimelist.net/images/anime/1286/99889l.jpg" alt="Demon Slayer" loading="lazy">
-              <span class="media-card__score"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>8.6</span>
-              <button class="media-card__play-btn" aria-label="Stream Demon Slayer">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-            </div>
-            <div class="media-card__info">
-              <h3>Demon Slayer</h3>
-              <p>Epic Battles • HD Stream</p>
-            </div>
-          </div>
+          <div id="anime-grid" class="anime-grid"></div>
         </div>
-      </div>
-
-      <!-- User-Friendly Perks Section -->
-      <div class="hub-vision-section">
-        <div class="hub-pillars-grid">
-          <div class="hub-pillar-card">
-            <div class="hub-pillar-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            </div>
-            <h3 class="hub-pillar-title">Instant In-Browser Play</h3>
-            <p class="hub-pillar-desc">Everything runs directly in your browser on phone, tablet, or PC. No downloads, no storage waste, and no waiting.</p>
-          </div>
-          <div class="hub-pillar-card">
-            <div class="hub-pillar-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-            </div>
-            <h3 class="hub-pillar-title">Listen While You Play</h3>
-            <p class="hub-pillar-desc">Put on a chill lo-fi soundtrack or high-energy beats in the background while enjoying your favorite games.</p>
-          </div>
-          <div class="hub-pillar-card">
-            <div class="hub-pillar-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-            </div>
-            <h3 class="hub-pillar-title">Always 100% Free</h3>
-            <p class="hub-pillar-desc">No paywalls, no mandatory sign-ups, and no limits. Jump in whenever you have a few minutes of free time.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hub Footer -->
-      <footer class="hub-footer">
-        <div class="brand-line-unified" style="font-size: 1.6rem; gap: 8px;">
-          <span class="brand-line-title">goar<span class="brand-accent">xyz</span></span>
-        </div>
-        <div class="hub-footer-links">
-          <button type="button" class="hub-footer-link" id="btn-open-platform-settings">Platform Settings</button>
-          <button type="button" class="hub-footer-link" id="btn-open-privacy">Privacy Policy</button>
-          <button type="button" class="hub-footer-link" id="btn-open-terms">Terms of Service</button>
-          <button type="button" class="hub-footer-link" id="btn-open-cookies">Cookie Policy</button>
-          <button type="button" class="hub-footer-link" id="btn-open-consent-settings">Cookie Preferences</button>
-        </div>
-        <p class="hub-footer-copy">&copy; 2026 goarxyz. All rights reserved. The Unified Digital Entertainment System.</p>
-      </footer>
+      </main>
     </div>
-  </div>
+    
+    <!-- ANIME DETAILS OVERVIEW MODAL -->
+    <div id="anime-modal" class="anime-modal" style="display:none;">
+      <div class="anime-modal-backdrop" id="anime-modal-backdrop"></div>
+      <div class="anime-modal-content">
+        <button id="anime-modal-close" aria-label="Close details">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <div id="anime-modal-body"></div>
+      </div>
+    </div>
+
+    <!-- MY WATCHLIST MODAL -->
+    <div id="anime-watchlist-modal" class="anime-modal" style="display:none;">
+      <div class="anime-modal-backdrop" id="anime-watchlist-backdrop"></div>
+      <div class="anime-modal-content anime-watchlist-modal-content">
+        <button id="anime-watchlist-close" aria-label="Close Watchlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <div class="anime-watchlist-header">
+          <h2 style="font-size: 1.3rem; font-weight: 700;">My Anime Watchlist</h2>
+          <span id="anime-watchlist-modal-count" style="font-size: 0.85rem; color: var(--brand-orange); font-weight: 600;">0 saved anime</span>
+        </div>
+        <div id="anime-watchlist-grid" class="anime-grid anime-watchlist-grid">
+          <div class="anime-empty-state">No anime bookmarked yet. Click "+ Watchlist" on any anime to save it here!</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- NYANIME CINEMA STREAMING PLAYER MODAL (Theater Mode) -->
+    <div id="anime-player-modal" class="anime-player-modal" style="display:none;">
+      <div class="anime-player-content">
+        <!-- Top bar with brand and close -->
+        <div class="anime-player-topbar">
+          <div class="anime-player-top-brand">
+            <span class="brand-line-title">goar<span class="brand-accent">xyz</span></span>
+            <span class="anime-brand-badge">CINEMA</span>
+          </div>
+          <div class="anime-player-top-title-group">
+            <h2 id="anime-player-title">Anime Title</h2>
+            <span id="anime-player-ep-pill" class="anime-tag-badge anime-tag-sub">EP 1</span>
+          </div>
+          <div class="anime-player-top-tools">
+            <button id="anime-btn-cinema-lights" class="anime-player-tool-btn" title="Cinema Lights (Dim Background)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <span>Lights</span>
+            </button>
+            <button id="anime-btn-popout" class="anime-player-tool-btn" title="Open Stream in New Tab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              <span>Popout</span>
+            </button>
+            <button id="anime-player-close" class="anime-player-close-btn" aria-label="Close Player" title="Close Theater (Esc)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="anime-player-layout">
+          <!-- Main Cinema Screen Section -->
+          <div class="anime-player-video-section">
+            <div class="anime-player-video-wrapper">
+              <iframe id="anime-player-iframe" src="" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>
+              <div id="anime-player-loader" class="anime-player-loader" style="display:none;">
+                <div class="anime-player-spinner"></div>
+                <span>Connecting to HD Streaming Servers...</span>
+              </div>
+              <div id="anime-player-placeholder" class="anime-player-placeholder" style="display:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                <p>Unable to load stream on this server. Please switch to another server below.</p>
+              </div>
+            </div>
+
+            <!-- Server Selector Bar & Playback Navigation -->
+            <div class="anime-player-controls-bar">
+              <div class="anime-player-servers-wrap">
+                <div class="anime-servers-type-toggle">
+                  <button class="anime-audio-pill is-active" id="anime-audio-sub">SUB</button>
+                  <button class="anime-audio-pill" id="anime-audio-dub">DUB</button>
+                </div>
+                <span class="anime-servers-label">SERVERS:</span>
+                <div id="anime-player-servers" class="anime-player-servers"></div>
+              </div>
+
+              <div class="anime-player-actions">
+                <button id="anime-btn-prev" class="player-nav-btn" title="Previous Episode">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg> Prev Ep
+                </button>
+                <button id="anime-btn-next" class="player-nav-btn" title="Next Episode">
+                  Next Ep <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <label class="anime-autonext-toggle" title="Auto play next episode when finished">
+                  <input type="checkbox" id="anime-autonext-check" checked>
+                  <span class="anime-autonext-slider"></span>
+                  <span class="anime-autonext-text">Auto Next</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Anime Info & Meta Summary -->
+            <div class="anime-player-info">
+              <div class="anime-player-meta-left">
+                <h2 id="anime-player-subhead">Anime Title</h2>
+                <p id="anime-player-episode-title">Episode 1</p>
+                <div class="anime-player-genre-tags" id="anime-player-genres"></div>
+              </div>
+              <div class="anime-player-meta-right">
+                <button id="anime-player-watchlist-toggle" class="btn anime-btn-secondary" title="Bookmark series">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                  <span id="anime-player-watchlist-text">Add to Watchlist</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Episodes Selector Sidebar (NYAnime hallmark) -->
+          <div class="anime-player-sidebar">
+            <div class="anime-player-sidebar-header">
+              <div class="anime-ep-header-top">
+                <h3>Episodes (<span id="anime-episodes-count">0</span>)</h3>
+                <input type="text" id="anime-ep-search" placeholder="Jump to ep #..." class="anime-ep-search-input" autocomplete="off" />
+              </div>
+              <!-- Episode Range Navigation Tabs for long-running anime -->
+              <div id="anime-ep-range-tabs" class="anime-ep-range-tabs"></div>
+            </div>
+            <div id="anime-player-episodes-list" class="anime-player-episodes-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- End anime-section -->
 
   <nav class="bottom-nav" id="main-bottom-nav">
-  <a href="#hub" class="bottom-nav-item" class="bottom-nav-item is-active" id="sys-btn-hub">
+  <a href="#hub" class="bottom-nav-item" id="sys-btn-hub">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
     <span>Hub</span>
   </a>
@@ -423,7 +381,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
     <span>Music</span>
   </a>
-  <a href="#anime" class="bottom-nav-item" id="sys-btn-anime">
+  <a href="#anime" class="bottom-nav-item" class="bottom-nav-item is-active" id="sys-btn-anime">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
     <span>Anime</span>
   </a>
@@ -780,7 +738,7 @@
       </div>
     </div>
 
-    <script src="/script.js"></script>
+    <script src="/script-anime.js"></script>
 <button id="scroll-to-top" class="scroll-top-btn" aria-label="Scroll to top" title="Scroll to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></button>
 <div id="side-drawer" class="side-drawer">
   <div class="side-drawer-overlay"></div>

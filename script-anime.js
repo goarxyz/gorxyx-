@@ -1910,12 +1910,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-// --- NEW ARCHITECTURE LOGIC ---
+// --- DECOUPLED ARCHITECTURE LOGIC (ANIME) ---
 document.addEventListener('DOMContentLoaded', () => {
   const views = {
-    hub: document.getElementById('hub-section'),
-    games: document.getElementById('games-section'),
-    music: document.getElementById('music-section'),
     anime: document.getElementById('anime-section')
   };
   
@@ -1923,50 +1920,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const globalHeader = document.querySelector('.site-header, .header');
   if (globalHeader) globalHeader.style.display = 'none';
 
-  function switchSystem(sys) {
-    if (!views[sys]) sys = 'hub';
-    
-    // Hide all
-    Object.values(views).forEach(v => {
-      if(v) {
-        v.classList.remove('is-active');
-        v.style.display = 'none';
-      }
-    });
-    
-    // Reset nav
-    document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(el => el.classList.remove('is-active'));
-    
-    if(views[sys]) {
-      views[sys].classList.add('is-active');
-      views[sys].style.display = 'flex';
-    }
-    
-    if(bottomNav) bottomNav.style.display = 'flex';
-    
-    const btn = document.getElementById('sys-btn-' + sys);
-    if(btn) btn.classList.add('is-active');
+  // Ensure local section is active and visible
+  if (views.anime) {
+    views.anime.classList.add('is-active');
+    views.anime.style.display = 'flex';
+  }
 
-    // Update URL hash
-    try {
-      if (sys === 'hub') {
-        if (window.location.hash) window.history.replaceState(null, '', window.location.pathname);
-      } else {
-        window.history.replaceState(null, '', '#' + sys);
-      }
-    } catch(e) {}
-    
-    // Auto initialize content on open
-    if (sys === 'music') {
-      const mGrid = document.getElementById("music-grid");
-      if (mGrid && mGrid.children.length === 0 && typeof window.searchMusic === 'function') {
-        window.searchMusic('trending hits');
-      }
-    } else if (sys === 'anime') {
-      const aGrid = document.getElementById("anime-grid");
-      if (aGrid && aGrid.children.length === 0 && typeof window.loadTopAnime === 'function') {
-        window.loadTopAnime();
-      }
+  // Update navigation highlights
+  document.querySelectorAll('#main-bottom-nav .bottom-nav-item').forEach(el => el.classList.remove('is-active'));
+  const activeBtn = document.getElementById('sys-btn-anime');
+  if (activeBtn) activeBtn.classList.add('is-active');
+
+  function switchSystem(sys) {
+    if (sys === 'hub' || sys === 'index') {
+      window.location.href = '/';
+    } else if (sys !== 'anime' && sys) {
+      window.location.href = '/' + sys;
     }
   }
 
@@ -1993,17 +1962,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Hash Navigation Listener
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash.replace('#', '');
-    if (['games', 'music', 'anime', 'hub'].includes(hash)) {
+    if (hash && hash !== 'anime') {
       switchSystem(hash);
     }
   });
 
   // Initial Route Check
   const hashOnLoad = window.location.hash.replace('#', '');
-  if (['games', 'music', 'anime'].includes(hashOnLoad)) {
+  if (hashOnLoad && hashOnLoad !== 'anime') {
     switchSystem(hashOnLoad);
-  } else {
-    switchSystem('hub');
   }
 
   // --- Games System Wireup ---

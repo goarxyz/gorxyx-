@@ -11,6 +11,19 @@ const _dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(_fi
 const app = express();
 const PORT = 3000;
 
+// Route handlers for modular pages
+app.get("/games", (req, res) => {
+  res.sendFile(path.join(_dirname, "games.html"));
+});
+
+app.get("/music", (req, res) => {
+  res.sendFile(path.join(_dirname, "music.html"));
+});
+
+app.get("/anime", (req, res) => {
+  res.sendFile(path.join(_dirname, "anime.html"));
+});
+
 // Serve static files from the root directory
 app.use(express.static(_dirname));
 
@@ -51,7 +64,7 @@ const allGamesList: GameInfo[] = [];
 
 function initializeMetadata() {
   try {
-    const html = fs.readFileSync(path.join(_dirname, "index.html"), "utf-8");
+    const html = fs.readFileSync(path.join(_dirname, "games.html"), "utf-8");
     const root = parse(html);
     const cards = root.querySelectorAll(".game-card");
     
@@ -355,6 +368,9 @@ app.get("/game/:slug", (req, res) => {
           </div>
 
           <div class="theater-actions">
+            <button type="button" class="theater-btn" id="theater-popout-btn" title="Play in New Tab" onclick="window.open('https://play.famobi.com/${game.slug}/?customer=A1000', '_blank')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Play in New Tab
+            </button>
             <button type="button" class="theater-btn" id="theater-fav-btn" title="Save to favorites">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> Favorite
             </button>
@@ -377,10 +393,16 @@ app.get("/game/:slug", (req, res) => {
               <img src="${game.image}" alt="${game.title}" class="overlay-game-icon">
               <h2>${game.title}</h2>
             </div>
-            <button id="btn-play-game" class="btn-play-overlay">
-              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              PLAY NOW
-            </button>
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 260px; margin: 0 auto;">
+              <button id="btn-play-game" class="btn-play-overlay">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                PLAY NOW
+              </button>
+              <button onclick="window.open('https://play.famobi.com/${game.slug}/?customer=A1000', '_blank')" class="btn-play-overlay btn-play-newtab" style="background: transparent; border: 2px solid var(--orange-glow); color: var(--orange-glow); cursor: pointer;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;display:inline;vertical-align:middle;margin-right:6px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                PLAY IN NEW TAB
+              </button>
+            </div>
           </div>
 
           <iframe id="game-iframe" data-src="https://play.famobi.com/${game.slug}/?customer=A1000" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
